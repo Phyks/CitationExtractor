@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 import config
-from libbmc.citations import pdf
+import html
+import json
 import os
 import tempfile
 
 from bottle import redirect, request, route, run, view
+from libbmc import doi
+from libbmc.citations import pdf
 
 
 @route("/upload", method="POST")
@@ -30,12 +33,21 @@ def do_upload():
     # Process citations
     with tempfile.NamedTemporaryFile() as fh:
         upload.save(fh)
-        citations = pdf.cermine_dois(fh.name,
-                                     override_local=config.CERMINE_PATH)
+        raw_citations = pdf.cermine_dois(fh.name,
+                                         override_local=config.CERMINE_PATH)
+    citations = {
+        html.unescape(k): {
+            "doi": doi.to_canonical(v) if v is not None else v,
+            "oa": doi.get_oa_version(doi.to_canonical(v) if v is not None
+                                     else v)
+        }
+        for k, v in raw_citations.items()
+    }
 
     return {
         "params": {
-            "citations": citations
+            "citations": citations,
+            "upload_name": upload.filename
         }
     }
 
@@ -55,8 +67,7 @@ def index():
     Main index view, upload form.
     """
     return {
-        "params": {
-        }
+        "params": {}
     }
 
 
