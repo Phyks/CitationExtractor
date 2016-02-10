@@ -1,0 +1,4 @@
+HOST = "0.0.0.0"  # Host to listen on
+PORT = 8080  # Port to listen on
+DEBUG = True  # Enable debug in Bottle?
+CERMINE_PATH = None  # Should be set to the absolute path to CERMINE standalone JAR to prevent using the API.
