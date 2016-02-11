@@ -27,6 +27,14 @@
         dt:not(:first-child) {
             margin-top: 1em;
         }
+
+        .red {
+            text-color: red;
+        }
+
+        .green {
+            text-color: green;
+        }
     </style>
 </head>
 <body>
@@ -53,7 +61,14 @@
             % if v["oa"] is not None:
             <a href="{{ v["oa"] }}">{{ v["oa"] }}</a>
             % else:
-            <em>No OpenAccess version found.</em>
+            <em>
+                No OpenAccess version found.
+                % if v["sharable"]:
+                <strong class="green">It could be shared.</strong>
+                % else:
+                <strong class="red">It could not be shared.</strong>
+                % end
+            </em>
             % end
         </dd>
     % end

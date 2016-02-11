@@ -1,13 +1,34 @@
 #!/usr/bin/env python3
 import config
 import html
-import json
 import os
 import tempfile
 
 from bottle import redirect, request, route, run, view
 from libbmc import doi
 from libbmc.citations import pdf
+
+
+def format_citation(doi_url):
+    if doi_url is None:
+        return {
+            "doi": None,
+            "oa": None,
+            "sharable": None
+        }
+
+    canonical_doi = doi.to_canonical(doi_url)
+    sharable = doi.get_oa_policy(canonical_doi)
+    if sharable is None:
+        sharable = False
+    else:
+        sharable = "can" in sharable.values()
+
+    return {
+        "doi": canonical_doi,
+        "oa": doi.get_oa_version(canonical_doi),
+        "sharable": sharable
+    }
 
 
 @route("/upload", method="POST")
@@ -36,11 +57,7 @@ def do_upload():
         raw_citations = pdf.cermine_dois(fh.name,
                                          override_local=config.CERMINE_PATH)
     citations = {
-        html.unescape(k): {
-            "doi": doi.to_canonical(v) if v is not None else v,
-            "oa": doi.get_oa_version(doi.to_canonical(v) if v is not None
-                                     else v)
-        }
+        html.unescape(k): format_citation(v)
         for k, v in raw_citations.items()
     }
 
