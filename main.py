@@ -19,9 +19,7 @@ def format_citation(doi_url):
 
     canonical_doi = doi.to_canonical(doi_url)
     sharable = doi.get_oa_policy(canonical_doi)
-    if sharable is None:
-        sharable = False
-    else:
+    if sharable is not None:
         sharable = "can" in sharable.values()
 
     return {

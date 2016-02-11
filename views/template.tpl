@@ -29,11 +29,11 @@
         }
 
         .red {
-            text-color: red;
+            color: red;
         }
 
         .green {
-            text-color: green;
+            color: green;
         }
     </style>
 </head>
@@ -63,7 +63,9 @@
             % else:
             <em>
                 No OpenAccess version found.
-                % if v["sharable"]:
+                % if v["sharable"] is not None:
+                <strong>OpenAccess policy is unknown.</strong>
+                % elif v["sharable"]:
                 <strong class="green">It could be shared.</strong>
                 % else:
                 <strong class="red">It could not be shared.</strong>
