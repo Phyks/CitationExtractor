@@ -62,9 +62,9 @@
             <a href="{{ v["oa"] }}">{{ v["oa"] }}</a>
             % else:
             <em>
-                No OpenAccess version found.
+                No open-access version found.
                 % if v["sharable"] is None:
-                <strong>OpenAccess policy is unknown.</strong>
+                <strong>Open-access policy is unknown.</strong>
                 % elif v["sharable"]:
                 <strong class="green">It could be shared.</strong>
                 % else:
