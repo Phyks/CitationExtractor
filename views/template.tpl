@@ -63,7 +63,7 @@
             % else:
             <em>
                 No OpenAccess version found.
-                % if v["sharable"] is not None:
+                % if v["sharable"] is None:
                 <strong>OpenAccess policy is unknown.</strong>
                 % elif v["sharable"]:
                 <strong class="green">It could be shared.</strong>
