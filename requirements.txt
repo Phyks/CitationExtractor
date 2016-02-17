@@ -1,2 +1,2 @@
 bottle>=0.12.9
-libbmc>=0.1.3.1
+libbmc>=0.2
